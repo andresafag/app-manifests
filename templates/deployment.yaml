@@ -43,20 +43,20 @@ spec:
       containers:
       - name: python-store
         image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
-        imagePullPolicy: "{{ .Values.frontend.imagePullPolicy }}"
+        imagePullPolicy: "{{ .Values.frontend.image.pullPolicy }}"
         ports:
         - containerPort: 5000
         readinessProbe:
           httpGet:
             path: /ready
-            port: 8001
+            port: 5000
           initialDelaySeconds: 5
           periodSeconds: 5
           failureThreshold: 3
         livenessProbe:
           httpGet:
             path: /healthz
-            port: 8001
+            port: 5000
           initialDelaySeconds: 15
           periodSeconds: 10
           failureThreshold: 3
