@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: postgres-db
-        image: {.Values.database.image.repository}:{.Values.database.image.tag}
+        image: "{{ .Values.database.image.repository }}:{{ .Values.database.image.tag }}"
         ports:
         - containerPort: 5432
         envFrom:
@@ -33,7 +33,7 @@ metadata:
   labels:
     app: python-store
 spec:
-  replicas: {.Values.frontend.replicaCount}
+  replicas: "{{ .Values.frontend.replicaCount }}"
   selector:
     matchLabels:
       app: python-store
@@ -44,8 +44,8 @@ spec:
     spec:
       containers:
       - name: python-store
-        image: {.Values.frontend.image}:{.Values.frontend.imageTag}
-        imagePullPolicy: {.Values.frontend.imagePullPolicy}
+        image: "{{ .Values.frontend.image }}:{{ .Values.frontend.imageTag }}"
+        imagePullPolicy: "{{ .Values.frontend.imagePullPolicy }}"
         ports:
         - containerPort: 5000
         readinessProbe:
