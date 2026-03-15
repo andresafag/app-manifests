@@ -1,0 +1,13 @@
+frontend:
+  replicaCount: 2
+  image: 
+    repository: andresafag/python-frontend
+    tag: v1
+    pullPolicy: Always
+database:
+  replicaCount: 1
+  image: 
+    repository: andresafag/postgres-db
+    tag: v1
+    pullPolicy: Always
+  

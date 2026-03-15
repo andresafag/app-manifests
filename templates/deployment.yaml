@@ -1,0 +1,105 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-db
+  namespace: default
+  labels:
+    app: my-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-db
+  template:
+    metadata:
+      labels:
+        app: my-db
+    spec:
+      containers:
+      - name: postgres-db
+        image: {.Values.database.image.repository}:{.Values.database.image.tag}
+        ports:
+        - containerPort: 5432
+        envFrom:
+        - secretRef:
+            name: postgres-secret
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-store
+  namespace: default
+  labels:
+    app: python-store
+spec:
+  replicas: {.Values.frontend.replicaCount}
+  selector:
+    matchLabels:
+      app: python-store
+  template:
+    metadata:
+      labels:
+        app: python-store
+    spec:
+      containers:
+      - name: python-store
+        image: {.Values.frontend.image}:{.Values.frontend.imageTag}
+        imagePullPolicy: {.Values.frontend.imagePullPolicy}
+        ports:
+        - containerPort: 5000
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8001
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8001
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          failureThreshold: 3
+ 
+---
+
+
+
+
+
+      #   volumeMounts:
+      #   - name: postgres-storage
+      #     mountPath: /var/lib/postgresql/data
+      #   resources:
+      #     requests:
+      #       memory: "256Mi"
+      #       cpu: "250m"
+      #     limits:
+      #       memory: "512Mi"
+      #       cpu: "500m"
+      #   livenessProbe:
+      #     exec:
+      #       command:
+      #         - pg_isready
+      #         - -U
+      #         - myuser
+      #         - -d
+      #         - mydatabase
+      #     initialDelaySeconds: 30
+      #     periodSeconds: 10
+      #   readinessProbe:
+      #     exec:
+      #       command:
+      #         - pg_isready
+      #         - -U
+      #         - myuser
+      #         - -d
+      #         - mydatabase
+      #     initialDelaySeconds: 5
+      #     periodSeconds: 5
+      # volumes:
+      # - name: postgres-storage
+      #   persistentVolumeClaim:
+      #     claimName: postgres-pvc
