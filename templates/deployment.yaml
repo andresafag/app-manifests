@@ -6,7 +6,7 @@ metadata:
   labels:
     app: my-db
 spec:
-  replicas: 1
+  replicas: {{ .Values.database.replicaCount }}
   selector:
     matchLabels:
       app: my-db
@@ -33,7 +33,7 @@ metadata:
   labels:
     app: python-store
 spec:
-  replicas: "{{ .Values.frontend.replicaCount }}"
+  replicas: {{ .Values.frontend.replicaCount }}
   selector:
     matchLabels:
       app: python-store
