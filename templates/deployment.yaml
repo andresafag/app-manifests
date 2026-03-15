@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: my-db
-  namespace: default
   labels:
     app: my-db
 spec:
@@ -29,7 +28,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: python-store
-  namespace: default
   labels:
     app: python-store
 spec:
@@ -44,7 +42,7 @@ spec:
     spec:
       containers:
       - name: python-store
-        image: "{{ .Values.frontend.image }}:{{ .Values.frontend.imageTag }}"
+        image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
         imagePullPolicy: "{{ .Values.frontend.imagePullPolicy }}"
         ports:
         - containerPort: 5000
@@ -63,7 +61,7 @@ spec:
           periodSeconds: 10
           failureThreshold: 3
  
----
+
 
 
 
