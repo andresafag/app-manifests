@@ -2,12 +2,12 @@ frontend:
   replicaCount: 2
   image: 
     repository: andresafag/python-frontend
-    tag: v2
+    tag: "8280dcbfcd4580e3825f93c1b0554e246d84c731"
     pullPolicy: Always
 database:
   replicaCount: 1
   image: 
     repository: andresafag/postgres-db
-    tag: v1
+    tag: "8280dcbfcd4580e3825f93c1b0554e246d84c731"
     pullPolicy: Always
   
