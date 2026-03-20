@@ -46,6 +46,9 @@ spec:
         imagePullPolicy: "{{ .Values.frontend.image.pullPolicy }}"
         ports:
         - containerPort: 5000
+        envFrom:
+        - secretRef:
+            name: postgres-secret
         readinessProbe:
           httpGet:
             path: /ready
