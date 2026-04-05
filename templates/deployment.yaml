@@ -17,6 +17,9 @@ spec:
       containers:
       - name: postgres-db
         image: "{{ .Values.database.image.repository }}:{{ .Values.database.image.tag }}"
+        volumeMounts:
+        - name: datos-volumen
+          mountPath: /data
         resources:
           requests:
             cpu: "100m"      # Reserva mínima de CPU
@@ -29,6 +32,10 @@ spec:
         envFrom:
         - secretRef:
             name: postgres-secret
+      volumes:
+        - name: datos-volumen
+          persistentVolumeClaim:
+            claimName: ebs-pvc
 ---
 
 apiVersion: apps/v1

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ebs-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce # EBS solo puede ser montado en 1 nodo a la vez
+  storageClassName: ebs-sc
+  resources:
+    requests:
+      storage: 10Gi
