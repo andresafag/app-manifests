@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: aws-load-balancer-controller
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: aws-load-balancer-controller
+    # OJO: La URL correcta del repo de Helm de AWS es esta:
+    repoURL: https://aws.github.io/eks-charts
+    targetRevision: 1.7.1
+    helm:
+      values: |
+        clusterName: store-cluster
+        serviceAccount:
+          create: true
+          annotations:
+            # Esta anotación es la que vincula el ServiceAccount con tu IAM Role
+            eks.amazonaws.com/role-arn: arn:aws:iam::<ACCOUNT_ID>:role/<ROLE_NAME>
+  destination:
+    # CORREGIDO: Siempre con "kubernetes." al principio
+    server: 'https://kubernetes.default.svc'
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

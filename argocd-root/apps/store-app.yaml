@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: store-ecommerce
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/andresafag/app-manifests.git'
+    targetRevision: main
+    path: charts/my-store
+    helm:
+      # ArgoCD buscará este archivo dentro de 'charts/my-store'
+      valueFiles:
+        - values.yaml
+  destination:
+    server: 'https://kubernetes.default.svc' # <--- CORREGIDO: Añadido "kubernetes"
+    namespace: store-app
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
