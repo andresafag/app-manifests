@@ -17,7 +17,7 @@ spec:
           create: true
           annotations:
             # Esta anotación es la que vincula el ServiceAccount con tu IAM Role
-            eks.amazonaws.com/role-arn: arn:aws:iam::<ACCOUNT_ID>:role/<ROLE_NAME>
+            eks.amazonaws.com/role-arn: arn:aws:iam::688567305851:role/store-cluster-alb-controller
   destination:
     # CORREGIDO: Siempre con "kubernetes." al principio
     server: 'https://kubernetes.default.svc'
