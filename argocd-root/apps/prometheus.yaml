@@ -20,9 +20,7 @@ spec:
             size: 50Gi
         alertmanager:
           persistence:
-            enabled: true
-            storageClass: "gp3"
-            size: 2Gi
+            enabled: false
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: monitoring
