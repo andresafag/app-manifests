@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus-stack
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: 'https://prometheus-community.github.io/helm-charts' # Equivale al 'helm repo add'
+    chart: prometheus
+    targetRevision: 25.27.0 # Es buena práctica fijar una versión del chart
+    helm:
+      values: | # Aquí pegas el contenido de tu 'prometheus-values.yaml'
+        server:
+          persistentVolume:
+            enabled: true
+            storageClass: "gp3"
+            size: 50Gi
+        alertmanager:
+          persistentVolume:
+            enabled: true
+            storageClass: "gp3"
+            size: 2Gi
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
